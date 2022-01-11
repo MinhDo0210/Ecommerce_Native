@@ -1,12 +1,21 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-import Icon from 'react-native-vector-icons/Ionicons'
+import {createStackNavigator} from '@react-navigation/stack';
+
+import {HomeScreen} from '../screens';
+
+const Stack = createStackNavigator();
 
 export default function HomeStack() {
   return (
-    <View>
-      <Text>Home Screen</Text>
-      <Icon name="ios-location-outline" size={20} color={'black'}/>
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen
+        name='HomeScreen'
+        component={HomeScreen}
+        options={{
+          title: "Home",
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
   )
 }

@@ -1,10 +1,21 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import {createStackNavigator} from '@react-navigation/stack';
+
+import {MagazineScreen} from '../screens';
+
+const Stack = createStackNavigator();
 
 export default function MagazineStack() {
   return (
-    <View>
-      <Text>Magazine Screen</Text>
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen
+        name='MagazineScreen'
+        component={MagazineScreen}
+        options={{
+          title: "Magazine",
+          headerShown: false,
+        }}
+      />
+    </Stack.Navigator>
   )
 }
