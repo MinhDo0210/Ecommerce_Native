@@ -9,16 +9,28 @@ import {
   Image,
   TextInput,
 } from 'react-native'
+import { useSelector, useDispatch } from 'react-redux';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Font5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {images, metrics} from '../../assets';
 import Product from './Product';
+import DropDown from './DropDown';
+
 
 export default function HomeScreen({navigation}) {
+  const dispatch = useDispatch();
+
   const [product, setProduct] = useState(Product);
+
+  const onSend = (item) => () => {
+        dispatch(
+            {type: 'ADD_CART', data: {...item, quantity: 1}},
+        );
+    };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -32,7 +44,10 @@ export default function HomeScreen({navigation}) {
           <Image style={{width: metrics.Width / 5.7, height: metrics.Height * 0.075,}} source={images.LogoLeft}/>
         </TouchableOpacity>
         <View style={{flexDirection: 'row', justifyContent: 'space-around', width: metrics.Width * 0.4, paddingTop: '3%'}}>
-          <TouchableOpacity style={styles.touch}>
+          <TouchableOpacity 
+            style={styles.touch}
+            onPress={() => navigation.navigate('Cart')}
+          >
             <Icon name='cart-outline' color={'black'} size={metrics.Width * 0.1}/>
           </TouchableOpacity>
           <TouchableOpacity style={styles.touch}>
@@ -53,14 +68,7 @@ export default function HomeScreen({navigation}) {
           />
         </View>
         <View style={styles.filter}>
-          <TouchableOpacity style={styles.btnFilter}>
-            <Text style={styles.txt}>Best match</Text>
-            <Entypo name='chevron-thin-down' color={'black'} size={metrics.Width * 0.05}/>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btnFilter}>
-            <Text style={styles.txt}>Filters</Text>
-            <Entypo name='chevron-thin-down' color={'black'} size={metrics.Width * 0.05}/>
-          </TouchableOpacity>
+          <DropDown />
         </View>
       </View>
       <View style={styles.content}>
@@ -74,7 +82,10 @@ export default function HomeScreen({navigation}) {
               </View>
               <View style={styles.price}>
                 <Text style={styles.txtPrice}>${item.price}</Text>
-                <TouchableOpacity style={{paddingTop: 15}}>
+                <TouchableOpacity 
+                  style={{paddingTop: 15}}
+                  onPress={onSend(item)}
+                >
                   <Font5 name='cart-plus' color={'black'} size={25}/>
                 </TouchableOpacity>
               </View>
@@ -111,7 +122,6 @@ const styles =StyleSheet.create({
     alignItems: 'center',
   },
   filter: {
-    padding: 10,
     paddingTop: 20,
   },
   btnFilter: {
